@@ -1,0 +1,51 @@
+{	
+	"name": "accidents",		
+	"dockerComposeFile": "docker-compose.yml",	
+	"service": "app",
+	"workspaceFolder": "/workspace",
+	"features": {
+		"ghcr.io/devcontainers/features/java:1": {
+			"version": "none",
+			"installMaven": "true",			
+			"installGradle": "false"
+		}
+	},
+		"customizations": {
+			"vscode": {				
+				"extensions": [
+					"vscjava.vscode-spring-boot-dashboard", 
+					"vscjava.vscode-lombok",
+					"vscjava.vscode-java-pack",
+					"ms-azuretools.azure-dev",										
+					"mtxr.sqltools",
+					"mtxr.sqltools-driver-pg", 
+					"streetsidesoftware.code-spell-checker" 					
+				], 
+				"settings": {
+					"sqltools.connections": [
+						{
+							"name": "accidents",
+							"driver": "PostgreSQL",
+							"previewLimit": 50,
+							"server": "localhost",
+							"port": 5432,
+							"database": "accidents",
+							"username": "postgres",
+							"password": "password"
+						}
+					]				
+					
+			}
+		}
+	},	
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		8080, 5432
+	],
+	//,
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "",
+	// Comment out to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode"
+}
