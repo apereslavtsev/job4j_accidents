@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
@@ -18,7 +19,7 @@ public class AccidentMem implements AccidentRepository {
 
     private Map<Integer, Accident> store = new ConcurrentHashMap<>();
 
-    private int id = 0;
+    private AtomicInteger id = new AtomicInteger(0);
     
     @PostConstruct
     public void initStore() {
@@ -37,9 +38,8 @@ public class AccidentMem implements AccidentRepository {
 
     @Override
     public void create(Accident t) {
-        t.setId(id);
-        store.put(id, t);
-        id++;        
+        t.setId(id.getAndIncrement());
+        store.put(t.getId(), t);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AccidentMem implements AccidentRepository {
 
     @Override
     public boolean update(Accident t) {
-        return store.replace(t.getId(), t) != null;
+        return store.computeIfPresent(t.getId(), (key, value) -> t) != null;        
     }
 
 }
