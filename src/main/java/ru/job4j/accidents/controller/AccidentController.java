@@ -31,13 +31,22 @@ public class AccidentController {
 
     @GetMapping("/update")
     public String getByIdForUpdate(Model model, @RequestParam("id") int id) {
-        model.addAttribute("accident", accidents.read(id).get());
+        var opt = accidents.read(id);
+        if (opt.isEmpty()) {
+            model.addAttribute("message",
+                    "Данные с указанным идентификатором не найдены");
+            return "errors/404";
+        }
+        model.addAttribute("accident", opt.get());
         return "accidents/edit";
     }
 
     @PostMapping("/update")
-    public String update(@ModelAttribute Accident accident) {
-        accidents.update(accident);
+    public String update(Model model, @ModelAttribute Accident accident) {
+        if (!accidents.update(accident)) {
+            model.addAttribute("message", "Не удалось обновить lfyyst " + accident);
+            return "errors/404";
+        }
         return "redirect:/index";
     }
 
