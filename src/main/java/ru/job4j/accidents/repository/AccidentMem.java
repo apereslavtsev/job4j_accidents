@@ -3,6 +3,7 @@ package ru.job4j.accidents.repository;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import lombok.NoArgsConstructor;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
+import ru.job4j.accidents.model.Rule;
 
 @NoArgsConstructor
 @Repository
@@ -27,17 +29,23 @@ public class AccidentMem implements AccidentRepository {
         this.create(
             new Accident(0, "car theft",
              "car theft in Moskow", "Moskow", 
-             new AccidentType(1, "Две машины")));
+             new AccidentType(1, "Две машины"), 
+             Set.of(new Rule(1, "Статья. 1"), new Rule(2, "Статья. 2"))
+             ));
 
         this.create(
             new Accident(0, "driving on red",
              "driving on red in Saint-Petersburg", "Saint-Petersburg", 
-             new AccidentType(2, "Машина и человек")));
+             new AccidentType(2, "Машина и человек"), 
+             Set.of(new Rule(3, "Статья. 3"), new Rule(2, "Статья. 2"))
+             ));
 
         this.create(
             new Accident(0, "drunk driving",
              "drunk driving in Saratov", "Saratov", 
-             new AccidentType(3, "Машина и велосипед")));
+             new AccidentType(3, "Машина и велосипед"), 
+             Set.of(new Rule(3, "Статья. 3"))
+             ));
     }
 
     @Override
