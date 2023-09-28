@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface CrudInterface<T> {
     
-    void create(T t);
+    T create(T t);
 
     Optional<T> read(int id);
 

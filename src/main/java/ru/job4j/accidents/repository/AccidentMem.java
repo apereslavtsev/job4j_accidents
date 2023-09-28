@@ -49,9 +49,10 @@ public class AccidentMem implements AccidentRepository {
     }
 
     @Override
-    public void create(Accident t) {
+    public Accident create(Accident t) {
         t.setId(id.getAndIncrement());
         store.put(t.getId(), t);
+        return t;
     }
 
     @Override

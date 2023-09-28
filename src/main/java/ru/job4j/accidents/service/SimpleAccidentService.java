@@ -13,8 +13,9 @@ public class SimpleAccidentService implements AccidentService {
     private final AccidentRepository accidentRepository;
 
     @Override
-    public void create(Accident t) {
+    public Accident create(Accident t) {
         accidentRepository.create(t);
+        return t;
     }
 
     @Override

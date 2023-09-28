@@ -45,13 +45,21 @@
                                 <input type="text" class="form-control" id="address" name="address"
                                     th:field="*{address}">
                             </div>
-                            <div class="form-group">
+                            <div class="form-group" th:if="${accident.type != null}">
                                 <label for="type.id">Тип</label>
                                 <select class="form-control" id="type.id"  name="type.id">
                                     <option th:each="optionType : ${types}"
                                     th:value="${optionType.id}"
                                     th:text="${optionType.name}"
                                     th:selected="${optionType.id=accident.type.id}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group" th:if="${accident.type == null}">
+                                <label for="type.id">Тип</label>
+                                <select class="form-control" id="type.id"  name="type.id">
+                                    <option th:each="optionType : ${types}"
+                                    th:value="${optionType.id}"
+                                    th:text="${optionType.name}"></option>
                                 </select>
                             </div>
                         </div>
