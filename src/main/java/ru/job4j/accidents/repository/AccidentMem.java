@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import lombok.NoArgsConstructor;
 import ru.job4j.accidents.model.Accident;
+import ru.job4j.accidents.model.AccidentType;
 
 @NoArgsConstructor
 @Repository
@@ -25,15 +26,18 @@ public class AccidentMem implements AccidentRepository {
     public void initStore() {
         this.create(
             new Accident(0, "car theft",
-             "car theft in Moskow", "Moskow"));
+             "car theft in Moskow", "Moskow", 
+             new AccidentType(1, "Две машины")));
 
         this.create(
             new Accident(0, "driving on red",
-             "driving on red in Saint-Petersburg", "Saint-Petersburg"));
+             "driving on red in Saint-Petersburg", "Saint-Petersburg", 
+             new AccidentType(2, "Машина и человек")));
 
         this.create(
             new Accident(0, "drunk driving",
-             "drunk driving in Saratov", "Saratov"));
+             "drunk driving in Saratov", "Saratov", 
+             new AccidentType(3, "Машина и велосипед")));
     }
 
     @Override
