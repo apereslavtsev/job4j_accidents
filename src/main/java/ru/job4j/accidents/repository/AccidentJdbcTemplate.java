@@ -11,7 +11,6 @@ import java.util.Optional;
 
 @Repository
 @AllArgsConstructor
-@Primary
 public class AccidentJdbcTemplate implements AccidentRepository {
 
     private final JdbcTemplate jdbc;

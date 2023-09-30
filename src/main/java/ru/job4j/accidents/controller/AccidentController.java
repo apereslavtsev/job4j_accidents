@@ -2,7 +2,6 @@ package ru.job4j.accidents.controller;
 
 import lombok.AllArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,23 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.service.AccidentService;
+import ru.job4j.accidents.service.AccidentTypeService;
 
 @Controller
 @AllArgsConstructor
 @RequestMapping("/accidents")
 public class AccidentController {
     private final AccidentService accidents;
+    private final AccidentTypeService accidentTypeService;
 
     @GetMapping("/create")
     public String viewCreateAccident(Model model) {
-        List<AccidentType> types = new ArrayList<>();
-        types.add(new AccidentType(1, "Две машины"));
-        types.add(new AccidentType(2, "Машина и человек"));
-        types.add(new AccidentType(3, "Машина и велосипед"));
-        model.addAttribute("types", types);
+        model.addAttribute("types", accidentTypeService.getAll());
         List<Rule> rules = List.of(
                 new Rule(1, "Статья. 1"),
                 new Rule(2, "Статья. 2"),
@@ -64,11 +60,7 @@ public class AccidentController {
                     "Данные с указанным идентификатором не найдены");
             return "errors/404";
         }
-        List<AccidentType> types = new ArrayList<>();
-        types.add(new AccidentType(1, "Две машины"));
-        types.add(new AccidentType(2, "Машина и человек"));
-        types.add(new AccidentType(3, "Машина и велосипед"));
-        model.addAttribute("types", types);
+        model.addAttribute("types", accidentTypeService.getAll());
         model.addAttribute("accident", opt.get());
         return "accidents/edit";
     }
