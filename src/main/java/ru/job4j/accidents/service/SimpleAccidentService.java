@@ -2,9 +2,12 @@ package ru.job4j.accidents.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ru.job4j.accidents.model.Accident;
+import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.repository.AccidentRepository;
 
 @AllArgsConstructor
@@ -13,9 +16,22 @@ public class SimpleAccidentService implements AccidentService {
     private final AccidentRepository accidentRepository;
 
     @Override
-    public Accident create(Accident t) {
-        accidentRepository.create(t);
-        return t;
+    public Accident create(Accident accident, String[] ruleIds) {
+        if (ruleIds != null && ruleIds.length > 0) {
+            List<String> rIds = List.of(ruleIds);
+            accident.setRules(rIds.stream()
+                    .map(id -> new Rule(Integer.parseInt(id), ""))
+                    .collect(Collectors.toSet())
+                );
+        }
+        accidentRepository.create(accident);
+        return accident;
+    }
+
+    @Override
+    public Accident create(Accident accident) {
+        accidentRepository.create(accident);
+        return accident;
     }
 
     @Override
