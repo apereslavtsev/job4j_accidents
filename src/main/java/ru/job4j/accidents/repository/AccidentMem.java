@@ -29,21 +29,21 @@ public class AccidentMem implements AccidentRepository {
     @PostConstruct
     public void initStore() {
         this.create(
-            new Accident(0, "car theft",
+            new Accident(1, "car theft",
              "car theft in Moskow", "Moskow", 
              new AccidentType(1, "Две машины"), 
              Set.of(new Rule(1, "Статья. 1"), new Rule(2, "Статья. 2"))
              ));
 
         this.create(
-            new Accident(0, "driving on red",
+            new Accident(2, "driving on red",
              "driving on red in Saint-Petersburg", "Saint-Petersburg", 
              new AccidentType(2, "Машина и человек"), 
              Set.of(new Rule(3, "Статья. 3"), new Rule(2, "Статья. 2"))
              ));
 
         this.create(
-            new Accident(0, "drunk driving",
+            new Accident(3, "drunk driving",
              "drunk driving in Saratov", "Saratov", 
              new AccidentType(3, "Машина и велосипед"), 
              Set.of(new Rule(3, "Статья. 3"))

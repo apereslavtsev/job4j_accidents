@@ -8,19 +8,20 @@ import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.repository.AccidentRepository;
+import ru.job4j.accidents.repository.RuleRepository;
 
 @AllArgsConstructor
 @Service
 public class SimpleAccidentService implements AccidentService {
     private final AccidentRepository accidentRepository;
-    private final RuleService ruleService;
+    private final RuleRepository ruleRepository;
 
     @Override
     public Accident create(Accident accident, String[] ruleIds) {
         if (ruleIds != null && ruleIds.length > 0) {
             List<String> rIds = List.of(ruleIds);
             accident.setRules(rIds.stream()
-                    .map(id -> ruleService.read(Integer.parseInt(id)).get())
+                    .map(id -> ruleRepository.read(Integer.parseInt(id)).get())
                     .collect(Collectors.toSet())
                 );
         }
