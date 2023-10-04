@@ -13,7 +13,9 @@ import ru.job4j.accidents.repository.RuleRepository;
 @AllArgsConstructor
 @Service
 public class SimpleAccidentService implements AccidentService {
+
     private final AccidentRepository accidentRepository;
+    
     private final RuleRepository ruleRepository;
 
     @Override
