@@ -8,16 +8,12 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
-
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-
 import lombok.NoArgsConstructor;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.model.Rule;
 
-@Primary
 @NoArgsConstructor
 @Repository
 public class AccidentMem implements AccidentRepository {

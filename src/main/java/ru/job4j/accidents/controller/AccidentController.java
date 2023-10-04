@@ -47,8 +47,9 @@ public class AccidentController {
                     "Данные с указанным идентификатором не найдены");
             return "errors/404";
         }
+        Accident accident = opt.get();
+        model.addAttribute("accident", accident);
         model.addAttribute("types", accidentTypeService.getAll());
-        model.addAttribute("accident", opt.get());
         return "accidents/edit";
     }
 
