@@ -2,39 +2,43 @@ package ru.job4j.accidents.service;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ru.job4j.accidents.model.AccidentType;
-import ru.job4j.accidents.repository.AccidentTypeRepository;
+import ru.job4j.accidents.repository.AccidentTypeCrudRepository;
 
 @AllArgsConstructor
 @Service
 public class SimpleAccidentTypeService implements AccidentTypeService {
-    private final AccidentTypeRepository accidentTypeRepository;
+    private final AccidentTypeCrudRepository accidentTypeRepository;
 
     @Override
     public AccidentType create(AccidentType t) {
-        accidentTypeRepository.create(t);
+        accidentTypeRepository.save(t);
         return t;
     }
 
     @Override
-    public boolean delete(AccidentType t) {
-        return accidentTypeRepository.delete(t);
+    public boolean delete(AccidentType accidentType) {
+        accidentTypeRepository.delete(accidentType);
+        return !accidentTypeRepository.existsById(accidentType.getId());
     }
 
     @Override
     public List<AccidentType> getAll() {
-        return accidentTypeRepository.getAll();
+        return Lists.newArrayList(accidentTypeRepository.findAll());
     }
 
     @Override
     public Optional<AccidentType> read(int id) {        
-        return accidentTypeRepository.read(id);
+        return accidentTypeRepository.findById(id);
     }
 
     @Override
-    public boolean update(AccidentType t) {
-        return accidentTypeRepository.update(t);
+    public boolean update(AccidentType accidentType) {
+        accidentTypeRepository.save(accidentType);
+        return true;
     }
 }
