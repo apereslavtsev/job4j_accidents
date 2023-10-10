@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
-import ru.job4j.accidents.model.Accident;
+import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.utils.HibernateUtils;
 
 import java.util.List;
@@ -13,53 +13,53 @@ import java.util.Optional;
 @Primary
 @Repository
 @AllArgsConstructor
-public class AccidentHibernate implements AccidentRepository {
+public class AccidentTypeHibernate implements AccidentTypeRepository {
 
     private final SessionFactory sf;
 
     @Override
-    public List<Accident> getAll() {
+    public List<AccidentType> getAll() {
         return HibernateUtils.executeCommandInTransaction(sf, session -> {
             return session
-                    .createQuery("from Accident", Accident.class)
+                    .createQuery("from AccidentType", AccidentType.class)
                     .list();
 
         });
     }
 
     @Override
-    public Accident create(Accident accident) {
+    public AccidentType create(AccidentType accidentType) {
         return HibernateUtils.executeCommandInTransaction(sf, session -> {
-            session.save(accident);
-            return accident;
+            session.save(accidentType);
+            return accidentType;
         });
     }
 
     @Override
-    public boolean delete(Accident accident) {
+    public boolean delete(AccidentType accidentType) {
         return HibernateUtils.executeCommandInTransaction(sf, session -> {
-            return session.createQuery("delete from Accident where id =:id")
-                    .setParameter("id", accident.getId()).executeUpdate() > 0;
+            return session.createQuery("delete from AccidentType as at where at.id = :fid")
+                    .setParameter("fid", accidentType.getId()).executeUpdate() > 0;
         });
 
     }
 
     @Override
-    public Optional<Accident> read(int id) {
+    public Optional<AccidentType> read(int id) {
         return HibernateUtils.executeCommandInTransaction(sf, session -> {
             return session
-                    .createQuery("select distinct accident from Accident as accident left join fetch accident.type "
-                            + "left join fetch accident.rules where accident.id = :id", Accident.class)
-                    .setParameter("id", id).uniqueResultOptional();
+                    .createQuery("from AccidentType as at where at.id = :fid",
+                            AccidentType.class)
+                    .setParameter("fid", id).uniqueResultOptional();
         });
 
     }
 
     @Override
-    public boolean update(Accident accident) {
+    public boolean update(AccidentType accidentType) {
         boolean rsl = false;
-        rsl =  HibernateUtils.executeCommandInTransaction(sf, session -> {
-            session.merge(accident);
+        rsl = HibernateUtils.executeCommandInTransaction(sf, session -> {
+            session.merge(accidentType);
             return true;
         });
         return rsl;

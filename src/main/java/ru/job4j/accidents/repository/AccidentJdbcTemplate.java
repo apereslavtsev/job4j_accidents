@@ -2,7 +2,6 @@ package ru.job4j.accidents.repository;
 
 import lombok.AllArgsConstructor;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -26,7 +25,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-@Primary
 @Repository
 @AllArgsConstructor
 public class AccidentJdbcTemplate implements AccidentRepository {

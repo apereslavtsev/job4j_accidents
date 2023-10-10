@@ -2,7 +2,6 @@ package ru.job4j.accidents.repository;
 
 import lombok.AllArgsConstructor;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -12,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Optional;
 
-@Primary
 @Repository
 @AllArgsConstructor
 public class RuleJdbcTemplate implements RuleRepository {
