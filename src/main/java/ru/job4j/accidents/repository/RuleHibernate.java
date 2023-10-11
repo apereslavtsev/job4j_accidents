@@ -1,13 +1,13 @@
 package ru.job4j.accidents.repository;
 
 import lombok.AllArgsConstructor;
-import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
+
 import ru.job4j.accidents.model.Rule;
-import ru.job4j.accidents.utils.HibernateUtils;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Primary
@@ -15,50 +15,36 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RuleHibernate implements RuleRepository {
 
-    private final SessionFactory sf;
+    private final CrudRepository crudRepository;
 
     @Override
     public List<Rule> getAll() {
-        return HibernateUtils.executeCommandInTransaction(sf, session -> {
-            return session
-                    .createQuery("from Rule", Rule.class)
-                    .list();
-
-        });
+        return crudRepository.query("from Rule", Rule.class);
     }
 
     @Override
     public Rule create(Rule rule) {
-        return HibernateUtils.executeCommandInTransaction(sf, session -> {
-            session.save(rule);
-            return rule;
-        });
+        crudRepository.run(session -> session.save(rule));
+        return rule;
     }
 
     @Override
     public boolean delete(Rule rule) {
-        return HibernateUtils.executeCommandInTransaction(sf, session -> {
-            return session.createQuery("delete from Rule as r where r.id = :fid")
-                    .setParameter("fid", rule.getId()).executeUpdate() > 0;
-        });
+        return crudRepository.run("delete from Rule where id =:id",
+                Map.of("id", rule.getId())) > 0;
 
     }
 
     @Override
     public Optional<Rule> read(int id) {
-        return HibernateUtils.executeCommandInTransaction(sf, session -> {
-            return session
-                    .createQuery("from Rule as r where r.id = :fid",
-                            Rule.class)
-                    .setParameter("fid", id).uniqueResultOptional();
-        });
-
+        return crudRepository.optional("from Rule as r where r.id = :fid",
+                            Rule.class, Map.of("fid", id));
     }
 
     @Override
     public boolean update(Rule rule) {
         boolean rsl = false;
-        rsl = HibernateUtils.executeCommandInTransaction(sf, session -> {
+        rsl = crudRepository.tx(session -> {
             session.merge(rule);
             return true;
         });
