@@ -10,4 +10,5 @@
     <include file="scripts/003_add_accidentType.sql" relativeToChangelogFile="true"/>
     <include file="scripts/004_ddl_alter_accidents_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/005_add_rules.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/006_ddl_create_users.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>
