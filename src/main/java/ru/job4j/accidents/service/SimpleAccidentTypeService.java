@@ -3,7 +3,6 @@ package ru.job4j.accidents.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ru.job4j.accidents.model.AccidentType;
@@ -28,7 +27,7 @@ public class SimpleAccidentTypeService implements AccidentTypeService {
 
     @Override
     public List<AccidentType> getAll() {
-        return Lists.newArrayList(accidentTypeRepository.findAll());
+        return accidentTypeRepository.findAll();
     }
 
     @Override
@@ -38,7 +37,10 @@ public class SimpleAccidentTypeService implements AccidentTypeService {
 
     @Override
     public boolean update(AccidentType accidentType) {
-        accidentTypeRepository.save(accidentType);
-        return true;
+        boolean exist = accidentTypeRepository.existsById(accidentType.getId());
+        if (exist) {
+            accidentTypeRepository.save(accidentType);
+        }
+        return exist;
     }
 }

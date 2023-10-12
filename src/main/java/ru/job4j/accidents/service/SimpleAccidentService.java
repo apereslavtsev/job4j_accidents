@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ru.job4j.accidents.model.Accident;
@@ -46,7 +45,7 @@ public class SimpleAccidentService implements AccidentService {
 
     @Override
     public List<Accident> getAll() {
-        return Lists.newArrayList(accidentRepository.findAll());
+        return accidentRepository.findAll();
     }
 
     @Override
@@ -56,7 +55,10 @@ public class SimpleAccidentService implements AccidentService {
 
     @Override
     public boolean update(Accident t) {
-        accidentRepository.save(t);
-        return true;
+        boolean exist = accidentRepository.existsById(t.getId());
+        if (exist) {
+            accidentRepository.save(t);
+        }
+        return exist;
     }
 }

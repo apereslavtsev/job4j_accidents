@@ -3,7 +3,6 @@ package ru.job4j.accidents.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.assertj.core.util.Lists;
 import org.springframework.stereotype.Service;
 import lombok.AllArgsConstructor;
 import ru.job4j.accidents.model.Rule;
@@ -28,7 +27,7 @@ public class SimpleRuleService implements RuleService {
 
     @Override
     public List<Rule> getAll() {
-        return Lists.newArrayList(ruleRepository.findAll());
+        return ruleRepository.findAll();
     }
 
     @Override
@@ -38,7 +37,10 @@ public class SimpleRuleService implements RuleService {
 
     @Override
     public boolean update(Rule t) {
-        ruleRepository.save(t);
-        return true;
+        boolean exist = ruleRepository.existsById(t.getId());
+        if (exist) {
+            ruleRepository.save(t);
+        }
+        return exist;
     }
 }
