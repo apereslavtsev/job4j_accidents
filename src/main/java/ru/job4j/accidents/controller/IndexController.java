@@ -14,9 +14,9 @@ public class IndexController {
 
     private AccidentService accidentService;
 
-    @GetMapping({"/", "/index", "/accidents"})
+    @GetMapping({ "/", "/index", "/accidents" })
     public String getIndex(Model model) {
-       model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         model.addAttribute("accidents", accidentService.getAll());
         return "index";
     }

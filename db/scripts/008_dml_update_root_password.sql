@@ -1,0 +1,1 @@
+UPDATE users SET password = '$2a$10$t2I7rZHnTH/pRL4IDx5Wj.gQlodhnbQZK3B4F0C2xKx3JbxRjwvwG' WHERE username = 'root';

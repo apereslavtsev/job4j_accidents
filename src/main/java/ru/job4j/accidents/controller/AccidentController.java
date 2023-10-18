@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class AccidentController {
     public String viewCreateAccident(Model model) {
         model.addAttribute("types", accidentTypeService.getAll());
         model.addAttribute("rules", ruleService.getAll());
+        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return "accidents/create";
     }
 
@@ -50,6 +52,7 @@ public class AccidentController {
         Accident accident = opt.get();
         model.addAttribute("accident", accident);
         model.addAttribute("types", accidentTypeService.getAll());
+        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return "accidents/edit";
     }
 

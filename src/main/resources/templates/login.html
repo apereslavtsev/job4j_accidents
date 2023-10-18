@@ -21,6 +21,8 @@
 <body>
     <div class="container py-3">
         <main class="form-signin">
+            <a th:href= "@{/reg}">"Регистрация</a>
+
             <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
             <div th:if="${not #lists.isEmpty(errorMessage)}" class="alert alert-danger" role="alert">
                 <span th:text="${errorMessage}"></span>
