@@ -44,6 +44,7 @@ public class AccidentController {
     @GetMapping("/update")
     public String getByIdForUpdate(Model model, @RequestParam("id") int id) {
         var opt = accidents.read(id);
+        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         if (opt.isEmpty()) {
             model.addAttribute("message",
                     "Данные с указанным идентификатором не найдены");
@@ -51,8 +52,7 @@ public class AccidentController {
         }
         Accident accident = opt.get();
         model.addAttribute("accident", accident);
-        model.addAttribute("types", accidentTypeService.getAll());
-        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        model.addAttribute("types", accidentTypeService.getAll());        
         return "accidents/edit";
     }
 
