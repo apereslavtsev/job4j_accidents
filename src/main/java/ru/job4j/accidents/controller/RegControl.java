@@ -1,5 +1,6 @@
 package ru.job4j.accidents.controller;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,15 +23,16 @@ public class RegControl {
 
     @PostMapping("/reg")
     public String regSave(@ModelAttribute User user, Model model) {
-        if (users.findByUsername(user.getUsername()).isPresent()) {
+        try {
+            user.setEnabled(true);
+            user.setPassword(encoder.encode(user.getPassword()));
+            user.setAuthority(authorities.findByAuthority("ROLE_USER"));
+            users.save(user);
+        } catch (DataIntegrityViolationException e) {
             model.addAttribute("errorMessage",
-            "User with this login already exists, select a different login");
+                    "User with this login already exists, select a different login");
             return "reg";
         }
-        user.setEnabled(true);
-        user.setPassword(encoder.encode(user.getPassword()));
-        user.setAuthority(authorities.findByAuthority("ROLE_USER"));
-        users.save(user);
         return "redirect:/login";
     }
 

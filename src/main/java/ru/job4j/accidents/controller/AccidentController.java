@@ -59,6 +59,7 @@ public class AccidentController {
     @PostMapping("/update")
     public String update(Model model, @ModelAttribute Accident accident) {
         if (!accidents.update(accident)) {
+            model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
             model.addAttribute("message", "Не удалось обновить данные " + accident);
             return "errors/404";
         }
