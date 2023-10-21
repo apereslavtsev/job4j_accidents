@@ -8,8 +8,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
-import java.util.Optional;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.assertj.core.api.Assertions.*;
 
@@ -23,12 +21,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import ru.job4j.Main;
 import ru.job4j.accidents.model.User;
-import ru.job4j.accidents.repository.UserRepository;
+import ru.job4j.accidents.service.UserService;
 
+@ActiveProfiles("test")
 @SpringBootTest(classes = Main.class)
 @AutoConfigureMockMvc
 public class RegControlTest {
@@ -37,7 +37,7 @@ public class RegControlTest {
     private MockMvc mockMvc;
 
     @MockBean
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -54,18 +54,16 @@ public class RegControlTest {
 
     @Test
     void whenRegPageThenReturnRegPage() throws Exception {
-
         mockMvc.perform(get("/reg"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(view().name("reg"));
-
     }
 
     @Test
     public void whenRegFailedThenReturnRegPage() throws Exception {
 
-        Mockito.when(this.userRepository.save(expectedUser)).thenThrow(DataIntegrityViolationException.class);
+        Mockito.when(this.userService.save(expectedUser)).thenReturn(false);
 
         this.mockMvc.perform(post("/reg")
                 .flashAttr("user", expectedUser))
@@ -79,7 +77,8 @@ public class RegControlTest {
 
     @Test
     public void whenRegThenSaveUser() throws Exception {
-        Mockito.when(this.userRepository.findByUsername(any(String.class))).thenReturn(Optional.empty());
+
+        Mockito.when(this.userService.save(expectedUser)).thenReturn(true);
 
         this.mockMvc.perform(post("/reg")
                 .flashAttr("user", expectedUser))
@@ -87,10 +86,9 @@ public class RegControlTest {
                 .andExpect(status().is3xxRedirection());
 
         ArgumentCaptor<User> userArg = ArgumentCaptor.forClass(User.class);
-        verify(userRepository).save(userArg.capture());
+        verify(userService).save(userArg.capture());
         assertThat(encoder.matches("123456", userArg.getValue().getPassword())).isTrue();
         assertThat(userArg.getValue().getAuthority().getAuthority()).isEqualTo("ROLE_USER");
-
     }
 
 }
