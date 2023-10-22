@@ -22,11 +22,12 @@ public class SimpleUserRepository implements UserService {
 
     @Override
     public boolean save(User user) {
-        boolean rsl = true;
+        boolean rsl = false;
         try {
             userRepository.save(user);
+            rsl = true;
         } catch (Exception e) {
-            rsl = false;
+            e.printStackTrace();
         }
         return rsl;
     }
